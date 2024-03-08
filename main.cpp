@@ -1,3 +1,6 @@
+// To Resolve
+// Consider x  6
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -5,29 +8,10 @@
 #include <algorithm>
 #include <string>
 #include "Riscv_instructions.h"
-#include "Error.h"
+#include "Instructions_Func.h"
+#include "Auxiliary_Functions.h"
 
 using namespace std;
-
-// Function to remove leading and trailing spaces from a string
-const string trim(const string &str)
-{
-    // Find the first non-space character
-    auto start = find_if_not(str.begin(), str.end(), [](unsigned char c)
-                             { return isspace(c); });
-
-    // Find the last non-space character
-    auto end = find_if_not(str.rbegin(), str.rend(), [](unsigned char c)
-                           { return isspace(c); })
-                   .base();
-
-    // If start and end are the same, the string is either all spaces or empty
-    if (start == end)
-        return "";
-
-    // Return the substring without leading and trailing spaces
-    return string(start, end);
-}
 
 // Object of instruction being executed
 RISC_V_Instructions Instruction;
@@ -52,11 +36,11 @@ int main()
 
             // Removing leading and trailing spaces an instruction
             line = trim(line);
-
             // If derivatives
             if (!isDirective(line))
             {
-                CheckInstruction(line);
+                Instruction = InitializeInstruction(line);
+                Instruction.printInstruction();
             }
         }
     }
