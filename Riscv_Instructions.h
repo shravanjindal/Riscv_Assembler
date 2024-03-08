@@ -3,11 +3,12 @@
 
 #include <unordered_map>
 #include <string.h>
+#include <limits.h>
 
 using namespace std;
 
 // Op Codes Map
-unordered_map<string, string> opcode_map = {
+unordered_map<string, string> R_opcode_map = {
     // R_Type
     {"add", "0110011"},
     {"and", "0110011"},
@@ -18,10 +19,12 @@ unordered_map<string, string> opcode_map = {
     {"srl", "0110011"},
     {"sub", "0110011"},
     {"xor", "0110011"},
-    {"slt", "0110011"},
     {"mul", "0110011"},
     {"div", "0110011"},
+    {"rem", "0110011"},
+};
 
+unordered_map<string, string> I_opcode_map = {
     // I_Type
     {"addi", "0010011"},
     {"andi", "0010011"},
@@ -31,25 +34,89 @@ unordered_map<string, string> opcode_map = {
     {"lh", "0000011"},
     {"lw", "0000011"},
     {"jalr", "1100111"},
+};
 
+unordered_map<string, string> S_opcode_map = {
     // S_Type
     {"sb", "0100011"},
     {"sw", "0100011"},
     {"sd", "0100011"},
     {"sh", "0100011"},
+};
 
+unordered_map<string, string> SB_opcode_map = {
     // SB_Type
     {"beq", "1100011"},
     {"bne", "1100011"},
     {"bge", "1100011"},
     {"blt", "1100011"},
+};
 
+unordered_map<string, string> U_opcode_map = {
     // U_Type
     {"auipc", "0010111"},
     {"lui", "0110111"},
+};
 
+unordered_map<string, string> UJ_opcode_map = {
     // UJ_Type
     {"jal", "1101111"}};
+
+// func3 map
+unordered_map<string, string> func3_map = {
+    // R-Type
+    {"add", "000"},
+    {"and", "111"},
+    {"or", "110"},
+    {"sll", "001"},
+    {"slt", "010"},
+    {"sra", "101"},
+    {"srl", "101"},
+    {"sub", "000"},
+    {"xor", "100"},
+    {"mul", "000"},
+    {"div", "100"},
+    {"rem", "110"},
+
+    // I_Type
+    {"addi", "000"},
+    {"andi", "111"},
+    {"ori", "110"},
+    {"lb", "000"},
+    {"ld", "011"},
+    {"lh", "001"},
+    {"lw", "010"},
+    {"jalr", "000"},
+
+    // S_Type
+    {"sb", "000"},
+    {"sw", "010"},
+    {"sd", "011"},
+    {"sh", "001"},
+
+    // SB_Type
+    {"beq", "000"},
+    {"bne", "001"},
+    {"bge", "101"},
+    {"blt", "100"},
+};
+
+// func7 map
+unordered_map<string, string> func7_map = {
+    // R-Type
+    {"add", "0000000"},
+    {"and", "0000000"},
+    {"or", "0000000"},
+    {"sll", "000000"},
+    {"slt", "000000"},
+    {"sra", "0100000"},
+    {"srl", "0000000"},
+    {"sub", "0100000"},
+    {"xor", "0000000"},
+    {"mul", "0000001"},
+    {"div", "0000001"},
+    {"rem", "0000001"},
+};
 
 // Risc-V Directives
 class Directives
@@ -63,8 +130,19 @@ class RISC_V_Instructions
 {
     // To Make elements available for public
 public:
-    int rd, rs1, rs2, imm1, func3, func7, func6, imm2;
-    string OpCode;
+    int rd = INT_MIN, rs1 = INT_MIN, rs2 = INT_MIN, imm = INT_MIN;
+    string OpCode = "NONE", Instruction = "NONE", func3 = "NONE", func7 = "NONE";
+
+    void printInstruction()
+    {
+        cout << "OpCode: " << OpCode << endl;
+        cout << "rd: " << rd << endl;
+        cout << "rs1: " << rs1 << endl;
+        cout << "rs2: " << rs2 << endl;
+        cout << "func3: " << func3 << endl;
+        cout << "func7: " << func7 << endl;
+        cout << "Imm:" << imm <<endl;
+    }
 };
 
 // Function Definations
