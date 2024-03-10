@@ -126,12 +126,12 @@ int main()
     {
         while (getline(input_file, line))
         {
+            // Removing leading and trailing spaces an instruction
+            line = trim(line);
             // Empty or comments
             if (line.empty() || line[0] == '#')
                 continue; // Ignore Comments and empty lines
-
-            // Removing leading and trailing spaces an instruction
-            line = trim(line);
+            
             // If derivatives
             if (line == ".data")
             {
