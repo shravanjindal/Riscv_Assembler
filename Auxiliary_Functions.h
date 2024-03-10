@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <bitset>
 #include <algorithm>
 
 using namespace std;
@@ -37,4 +38,16 @@ const bool isNumber(string s)
     return true;
 }
 
+string convertTo12BitString(int num) {
+    // Determine the sign bit
+    char signBit = (num < 0) ? '1' : '0';
+    
+    // Convert the absolute value of the number to binary
+    string binaryString = bitset<11>(abs(num)).to_string();
+
+    // Combine sign bit and binary representation
+    string result = signBit + binaryString;
+    
+    return result;
+}
 #endif
