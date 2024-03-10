@@ -7,6 +7,14 @@
 
 using namespace std;
 
+unordered_map<string, int> dataTypeSize = {
+    {".byte", 1},
+    {".half", 2},
+    {".word", 4},
+    {".dword", 8},
+    {".asciiz", 1}
+};
+
 // Op Codes Map
 unordered_map<string, string> R_opcode_map = {
     // R_Type
@@ -130,7 +138,7 @@ class RISC_V_Instructions
 {
     // To Make elements available for public
 public:
-    int rd = INT_MIN, rs1 = INT_MIN, rs2 = INT_MIN, imm = INT_MIN;
+    int rd = INT_MIN, rs1 = INT_MIN, rs2 = INT_MIN, imm = INT_MIN, type = 1;
     string OpCode = "NONE", Instruction = "NONE", func3 = "NONE", func7 = "NONE";
 
     void printInstruction()
