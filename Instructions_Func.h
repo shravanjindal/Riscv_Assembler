@@ -105,7 +105,7 @@ int Calculate_Immediate(const string &hex, Error *output_error)
             decimalValue += digit * pow(16, power);
             power--;
         }
-        if(decimalValue > -2049 && decimalValue < 2047)
+        if(decimalValue > -2049 && decimalValue < 2048)
             return decimalValue;
         else
         {
