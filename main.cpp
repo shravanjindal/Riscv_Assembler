@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <math.h>
-#include "Riscv_instructions.h"
+#include "Riscv_Instructions.h"
 #include "Instructions_Func.h"
 #include "Auxiliary_Functions.h"
 
