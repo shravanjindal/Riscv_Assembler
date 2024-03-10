@@ -1,6 +1,3 @@
-// To Resolve
-// Consider x  6
-
 #include <iostream>
 #include <vector>
 #include <map>
@@ -22,33 +19,15 @@ int main()
     // Opening asm file
     ifstream input_file("main.asm");
     // Output machine code file
-    ofstream output_file("main.mc", ios::binary);
+    ofstream output_file("main.mc", ios::out);
 
     // Reading file line by line (instruction by instruction)
     string line;
-    // program counter
-    int program_counter = 0;
-    // count the labels in the asm file
-    while (getline(input_file, line))
-    {
-        program_counter++;
-        // get first word of each line
-        stringstream ss(line);
-        string temp_word = "";
-        ss >> temp_word;
-
-        if(!line.empty() && (line.back() == ':')){
-            // if label detected, insert in into branch_address map
-            branch_address[temp_word] = program_counter;
-        }
-    }
-    program_counter = 0;
-    // If file is open
-    if (output_file.is_open())
+    bool isText = true, isData = true;
+    if (input_file.is_open())
     {
         while (getline(input_file, line))
         {
-            program_counter++;
             // Empty or comments
             if (line.empty() || line[0] == '#')
                 continue; // Ignore Comments and empty lines
@@ -56,10 +35,42 @@ int main()
             // Removing leading and trailing spaces an instruction
             line = trim(line);
             // If derivatives
-            if (!isDirective(line))
+            if (line == ".data")
             {
-                Instruction = InitializeInstruction(line, program_counter);
-                Instruction.printInstruction();
+                isText = false;
+                isData = true;
+                continue;
+            }
+            else if(line == ".text")
+            {
+                isText = true;
+                isData = false;
+                continue;
+            }
+
+            // To get entire block
+            if(isData == true)
+                dataDirectiveInst.push_back(line);
+            else if(isText == true)
+            {
+                /* Setting Program Counter for labels */
+                try
+                {
+                    // Getting colon position if label
+                    size_t colonPos = line.find(':');
+                    if(colonPos != string::npos)
+                    {
+                        line = trim(line.substr(0, line.length()-1));
+                        labels[line] = pc;
+                    }
+                    else
+                        textDirectiveInst.push_back(line);
+                }
+                catch(exception ex)
+                {
+
+                }
+                pc++;
             }
         }
     }
